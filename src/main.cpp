@@ -17,12 +17,6 @@
 #include "images.h"
 #include "alarm.h"
 
-// WIFI
-//const char* WIFI_SSID = "Henry's iPhone 6";
-// const char *WIFI_SSID = "Henry's Netgear";
-const char *WIFI_SSID = "Henry's Living Room 2.4GHz";
-const char *WIFI_PWD = "13913954971";
-
 // HTTP Service
 HttpService service;
 
@@ -146,7 +140,44 @@ void setup()
     delay(2000);
 
     WiFi.mode(WIFI_AP_STA);
-    WiFi.begin(WIFI_SSID, WIFI_PWD);
+    WiFi.mode(WIFI_STA);
+
+    // Auto scan WiFi connection
+    String prefSSID = "none";
+    String prefPassword;
+    int ssidCount = WiFi.scanNetworks();
+    if (ssidCount == -1)
+    {
+        return;
+    }
+    for (int i = 0; i < ssidCount; i++)
+    {
+        String ssid = WiFi.SSID(i);
+        if (ssid.equals("Henry's Living Room 2.4GHz"))
+        {
+            prefSSID = ssid;
+            prefPassword = "13913954971";
+            break;
+        }
+        else if (ssid.equals("Henry's TP-LINK"))
+        {
+            prefSSID = ssid;
+            prefPassword = "13913954971";
+            break;
+        }
+        else if (ssid.equals("Henry's iPhone 6"))
+        {
+            prefSSID = ssid;
+            prefPassword = "13913954971";
+            // Don't break, cause this will connect to 4G network.
+            // It's absolutely not a first choise.
+        }
+    }
+    if (prefSSID.equals("none"))
+    {
+        return;
+    }
+    WiFi.begin(prefSSID.c_str(), prefPassword.c_str());
     WiFi.softAP("Smart-Clock-Orient");
 
     // Setup OTA
