@@ -43,6 +43,7 @@ const String WUNDERGRROUND_API_KEY = "2d4a4e7587426081";
 const String WUNDERGRROUND_LANGUAGE = "EN";
 const String WUNDERGROUND_COUNTRY = "CN";
 const String WUNDERGROUND_CITY = "Nanjing";
+const String WUNDERGROUND_CITY_ZMW = "00000.1.58238";
 
 // Initialize the oled display for address
 SH1106Wire display(I2C_DISPLAY_ADDRESS, SDA_PIN, SDC_PIN);
@@ -178,7 +179,7 @@ void setup()
         return;
     }
     WiFi.begin(prefSSID.c_str(), prefPassword.c_str());
-    WiFi.softAP("Smart-Clock-Orient");
+    //WiFi.softAP("Smart-Clock-Orient");
 
     // Setup OTA
     ArduinoOTA.begin();
@@ -342,9 +343,9 @@ void updateData(OLEDDisplay *display)
     drawProgress(display, 10, "Updating time...");
     timeClient.updateTime();
     drawProgress(display, 30, "Updating conditions...");
-    wunderground.updateConditions(WUNDERGRROUND_API_KEY, WUNDERGRROUND_LANGUAGE, WUNDERGROUND_COUNTRY, WUNDERGROUND_CITY);
+    wunderground.updateConditions(WUNDERGRROUND_API_KEY, WUNDERGRROUND_LANGUAGE, WUNDERGROUND_CITY_ZMW);
     drawProgress(display, 50, "Updating forecasts...");
-    wunderground.updateForecast(WUNDERGRROUND_API_KEY, WUNDERGRROUND_LANGUAGE, WUNDERGROUND_COUNTRY, WUNDERGROUND_CITY);
+    wunderground.updateForecastZMW(WUNDERGRROUND_API_KEY, WUNDERGRROUND_LANGUAGE, WUNDERGROUND_CITY_ZMW);
     //drawProgress(display, 80, "Updating temperature...");
     //updateTemperature();
     lastUpdate = timeClient.getFormattedTime();
