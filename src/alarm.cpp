@@ -242,7 +242,7 @@ void Alarm::onPlusButtonClick()
 }
 
 
-AlarmSettings Alarm::getSettings()
+AlarmSetting Alarm::getSettings()
 {
     return this->settings;
 }

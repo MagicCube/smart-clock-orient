@@ -6,66 +6,7 @@
 #include <TimeClient.h>
 #include <WundergroundClient.h>
 
-enum AlarmSettingStage
-{
-    NONE,
-    SET_HOUR,
-    SET_MIN,
-    SET_MODE
-};
-
-enum AlarmMode
-{
-    OFF,
-    ON,
-    WEEK_DAYS,
-    WEEK_ENDS
-};
-
-struct AlarmSettings
-{
-public:
-    AlarmMode mode = OFF;
-    String getModeString()
-    {
-        switch (mode)
-        {
-            case OFF:
-                return "Off";
-            case ON:
-                return "On";
-            case WEEK_DAYS:
-                return "WEEKDAYS";
-        }
-    }
-
-    int16_t hours = 0;
-    String getFormatedHours()
-    {
-        if (hours < 10 )
-        {
-            return "0" + String(hours);
-        }
-        return String(hours);
-    }
-
-    int16_t minutes = 0;
-    String getFormatedMinutes()
-    {
-        if (minutes < 10 )
-        {
-            return "0" + String(minutes);
-        }
-        return String(minutes);
-    }
-
-    String getFormatedTime()
-    {
-        String result = getFormatedHours() + ":";
-        result += getFormatedMinutes();
-        return result;
-    }
-};
+#include "alarm-setting.h";
 
 class Alarm
 {
@@ -82,7 +23,7 @@ public:
     void endSetting();
     bool nextSettingStage();
 
-    AlarmSettings getSettings();
+    AlarmSetting getSettings();
     AlarmSettingStage getSettingStage();
 
     void onMinusButtonClick();
@@ -91,7 +32,7 @@ public:
 private:
     TimeClient *timeClient;
     WundergroundClient *wunderground;
-    AlarmSettings settings;
+    AlarmSetting settings;
     AlarmSettingStage settingStage = NONE;
 
     int beeps = 0;
